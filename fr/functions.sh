@@ -1169,7 +1169,7 @@ if [[ "$jv_api" == "true" ]] || [[ "$keyboard" == "true" ]] ; then
 say " "
 return;
 else
-mpg321 "/dev/shm/abracadabra.mp3" 2>/dev/shm/null
+mpg321 "/home/pi/jarvis/plugins_installed/jarvis-magie-chiffres/abracadabra.mp3" 2>/dev/shm/null
 sleep 1
 return;
 fi
