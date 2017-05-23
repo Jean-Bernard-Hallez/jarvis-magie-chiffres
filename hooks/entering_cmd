@@ -1,3 +1,7 @@
 $verbose && jv_debug "DEBUG: entering_cmd hook"
 old_separator=$separator
 separator=""
+var_magie="/dev/shm/mag-lequel.txt"
+if test -e "$var1_magie"; then
+jv_handle_order "suite tour de magie."
+fi

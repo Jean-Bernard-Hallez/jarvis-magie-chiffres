@@ -14,7 +14,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre0" # pour faire du forcing #############################################################################
+ QuelTour="jv_pg_magiechiffre1" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 # echo "-$QuelTour-"
@@ -1314,7 +1314,6 @@ fi
 
 
 jv_pg_magiechiffre_fin () {
-trap "exit 1" ERR
 var_magie="/dev/shm/mag-lequel.txt"
 var1_magie="/dev/shm/mag-chiffre1.txt"
 
@@ -1394,9 +1393,12 @@ echo $(( `date +%d` - 1))  > $var_magie_repetunjour
 fi
 
 if [[ "$aijedis_magie_repetunjour" != `date +%d` ]]; then
-say "A tout moment vous pouvez prononcer le mot"
+say "A tout moment vous pouvez prononcer deux mots magique"
 say "répète !"
 say "si vous avez mal saisie ce que je vous demande..."
+say "et le second:"
+say "on arrête !"
+say "pour stopper les tours de magie"
 date +%d > $var_magie_repetunjour
 fi
 }
