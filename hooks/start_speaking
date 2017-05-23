@@ -1,0 +1,3 @@
+$verbose && jv_debug "DEBUG: start_speaking hook"
+old_separator=$separator
+separator=""

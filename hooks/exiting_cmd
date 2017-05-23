@@ -1,0 +1,3 @@
+$verbose && jv_debug "DEBUG: exiting_cmd hook"
+separator=$old_separator
+

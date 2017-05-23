@@ -1,0 +1,3 @@
+$verbose && jv_debug "DEBUG: entering_cmd hook"
+old_separator=$separator
+separator=""
