@@ -1,5 +1,5 @@
 *MAGI*(*)==FINMAGIECHIFFRE=`cat /dev/shm/mag-chiffre1.txt 2>/dev/null`; if [[ "$FINMAGIECHIFFRE" =~ "FIN" ]] && [[ "$memoordermagie" =~ "non" ]]; then commands="$(jv_get_commands)"; jv_handle_order "GOTOMAGFIN"; return; else jv_pg_magiechiffre; fi
->*ARRETE*==GOTOFINMAGIE
+>*ARRETE*==commands="$(jv_get_commands)"; jv_handle_order "GOTOMAGFIN"; return;
 > (*)==memoordermagie="$order"; commands="$(jv_get_commands)"; jv_handle_order "*MAGIE*"; return;
 
 GOTOMAGFIN==say "Ok, Au plaisir d'un autre tour de magie..."; jv_pg_magiechiffre_fin;
