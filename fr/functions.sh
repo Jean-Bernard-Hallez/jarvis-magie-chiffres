@@ -14,7 +14,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre0"	# pour faire du forcing ##############################################################################
+# QuelTour="jv_pg_magiechiffre0" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 # echo "-$QuelTour-"
@@ -31,10 +31,8 @@ order="$memoordermagie"
 var3_magie="/dev/shm/tour1fois0.txt"
 var3_magie_date=`cat $var3_magie 2>/dev/shm/null`
 var3_magie_date_auj=`date +%d`
-
 if [[ "$var3_magie_date" == "$var3_magie_date_auj" ]]; then
 magie_tourdejafait
-jv_pg_magiechiffre
 return;
 fi
 
@@ -43,7 +41,8 @@ say "1"
 say "2"
 say "3"
 say "je disparais..."
-gieGONG
+magieGONG
+date +%d > $var3_magie
 return;
 }
 
