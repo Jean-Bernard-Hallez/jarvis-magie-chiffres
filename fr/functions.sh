@@ -11,14 +11,40 @@ fi
 }
 
 magie_tour_hasard () {
-magienumero=("jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
+magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre1"	# pour faire du forcing ##############################################################################
+# QuelTour="jv_pg_magiechiffre0"	# pour faire du forcing ##############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 # echo "-$QuelTour-"
 $QuelTour
+}
+
+
+
+######################################################
+################ Tour N° 0 OK ########################
+######################################################
+jv_pg_magiechiffre0 () {
+order="$memoordermagie"
+var3_magie="/dev/shm/tour1fois0.txt"
+var3_magie_date=`cat $var3_magie 2>/dev/shm/null`
+var3_magie_date_auj=`date +%d`
+
+if [[ "$var3_magie_date" == "$var3_magie_date_auj" ]]; then
+magie_tourdejafait
+jv_pg_magiechiffre
+return;
+fi
+
+say "Voici le tour ou je disparais à trois"
+say "1"
+say "2"
+say "3"
+say "je disparais..."
+gieGONG
+return;
 }
 
 ######################################################
@@ -577,7 +603,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "inscrits sur le papier ce nombre de 7 chiffres"
+say "inscris sur le papier ce nombre de 7 chiffres"
 say "et donnes moi au hasard 6 chiffres d'entres eux"
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 1 2 3 4 5 6"
@@ -952,7 +978,6 @@ say "Voici le Tour ou je dois Devinez un très grand nombre !"
 min=19999
 max=29999
 chiffre_magie_random=$[($RANDOM % ($[$max - $min] + 1)) + $min]
-chiffre_magie_random=20800
 resultat_magie1=`echo $chiffre_magie_random | cut -c1`
 resultat_magie2=`echo $chiffre_magie_random | cut -c2-`
 resultat_magie2A=`echo $resultat_magie2 | cut -c1`
@@ -980,8 +1005,9 @@ fi
 if [[ "$var1valeur" == "Q1" ]]; then
 say "ok je le fais partir..."
 jv_handle_order "MESSEXTERNE ; $NOM_MAGIE_POURSMS ; je vous avez bien dit que je suis fort: $chiffre_magie_random"
+say "$NOM_MAGIE_POURSMS l'as tu bien reçu ?..."
 echo "Q2" > $var1_magie
-suiterep_magie="repete"
+suiterep_magie=""
 magie_mot_ditok
 return;
 fi
@@ -995,7 +1021,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "inscrit sur ce papier ce nombre: "
+say "inscris sur ce papier ce nombre: "
 say "$resultat_magie soit $resultat_magie1_virgule"
 suiterep_magie="repete"
 magie_mot_ditok
@@ -1006,7 +1032,7 @@ fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
 say "Maintenant sous ce nombre,"
-say "inscrit un nombre de 4 chiffres quelconque"
+say "inscris un nombre de 4 chiffres quelconque"
 say "en alignant les unitées avec les unitées, les dizaines avec les dizaines exetera..."
 say "et dictes-moi ton nombre:"
 if [[ "$aide_magie" == "aide" ]]; then
@@ -1039,12 +1065,12 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q6" ]]; then
-say "Dessous ce nombre inscrit celui-ci:"
+say "Dessous ce nombre que tu as mis"
 max_chiffre_totalmagie=4
 resultat_magie6=$(( 9999 - $resultat_magie5 ))
 conv_chiffre_magie "$resultat_magie6"
 # $resultat_magie --> Résulat
-say "$resultat_magie6 soit $resultat_magie1_virgule"
+say "inscris celui-ci: $resultat_magie6 soit $resultat_magie1_virgule"
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q7" > $var1_magie
@@ -1053,7 +1079,7 @@ fi
 
 if [[ "$var1valeur" == "Q7" ]]; then
 say "A ton tour..."
-say "inscrit encore un nombre à 4 chiffres et dictes moi le à nouveau"
+say "inscris encore un nombre à 4 chiffres et dictes moi le à nouveau"
 if [[ "$aide_magie" == "aide" ]]; then
 say "Par exemple 1 2 3 4"
 fi
@@ -1082,12 +1108,12 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q9" ]]; then
-say "Dessous ce nombre inscrit celui ci:"
+say "Juste en dessous de ton nombre:"
 max_chiffre_totalmagie=4
 resultat_magie8=$(( 9999 - $resultat_magie ))
 conv_chiffre_magie "$resultat_magie8"
 # $resultat_magie --> Résulat
-say "$resultat_magie8 soit $resultat_magie1_virgule"
+say "Inscris celui ci: $resultat_magie8 soit $resultat_magie1_virgule"
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q10" > $var1_magie
@@ -1105,13 +1131,20 @@ fi
 
 if [[ "$var1valeur" == "Q11" ]]; then
 say "Il me faut me concentrer..."
-say "car je pense avoir trouvé le résultat final..."
+say "car il me faut trouver le résultat final...un coup de baguette magique !?"
+magieGONG
+if [ -z "$resultat_magie8" ] || [ -z "$resultat_magie7" ] ||  [ -z "$resultat_magie6" ] ||  [ -z "$resultat_magie5" ] || [ -z "$resultat_magie3" ]; then
+echo "FIN" > $var1_magie
+say "Non en fait je suis vraiment embété, car je ne trouve pas.. ma magie à eu une déffaillance..."
+return;
+else
 resultat_magie9=$(( $resultat_magie8 +  $resultat_magie7 + $resultat_magie6 + $resultat_magie5 + $resultat_magie3 ))
+fi
+
 max_chiffre_totalmagie=5
 conv_chiffre_magie "$resultat_magie9"
 
 	if [[ "$resultat_magie9" == "$chiffre_magie_random" ]]; then
-	magieGONG
 	say "c'est $resultat_magie9 soit $resultat_magie1_virgule"
 		if test -n "$NOM_MAGIE_POURSMS"; then
 		echo "Q12" > $var1_magie
@@ -1282,6 +1315,7 @@ fi
 
 
 jv_pg_magiechiffre_fin () {
+trap "exit 1" ERR
 var_magie="/dev/shm/mag-lequel.txt"
 var1_magie="/dev/shm/mag-chiffre1.txt"
 
@@ -1294,7 +1328,7 @@ sudo rm $var_magie
 fi
 }
 
-magieGONG() {
+magieGONG () {
 # say "api $jv_api et keyboard $keyboard"
 
 if [[ "$jv_api" == "true" ]] || [[ "$keyboard" == "true" ]] ; then
@@ -1304,9 +1338,9 @@ else
 ordermagiedit=("Abracadabra !..." "Acara, cadabera !..." "Abracadabro Abracadabri !..." "Ouistiti sapristi !..." "Visto cara de cabra !..." "Sim sala bim !..." "Turlututu, chapeau pointu ! ..." "Magicorama !..." "Hokus Pokus !...")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say "$ordermagiedit1"
-
-mpg321 "/home/pi/jarvis/plugins_installed/jarvis-magie/chiffres/abracadabra.mp3" 2>/dev/shm/null
+mpg321 "/home/pi/jarvis/plugins_installed/jarvis-magie-chiffres/abracadabra.mp3" > /dev/null 2>&1
 sleep 1
+return;
 fi
 }
 
