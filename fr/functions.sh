@@ -242,7 +242,7 @@ var3_magie_date=`cat $var3_magie 2>/dev/shm/null`
 var3_magie_date_auj=`date +%d`
 
 if [[ "$var3_magie_date" == "$var3_magie_date_auj" ]]; then
-jv_warning "Tout déja fait aujourd'hui... ne peut-être refait ! désolé..."
+magie_tourdejafait
 jv_pg_magiechiffre
 return;
 fi
@@ -363,7 +363,7 @@ var4_magie_date=`cat $var4_magie 2>/dev/shm/null`
 var4_magie_date_auj=`date +%d`
 	
 if [[ "$var4_magie_date" == "$var4_magie_date_auj" ]]; then
-jv_warning "Tout déja fait aujourd'hui... ne peut-être refait !"
+magie_tourdejafait
 jv_pg_magiechiffre
 return;
 fi
@@ -1399,4 +1399,17 @@ ordermagiedit=("Alors on ne sait plus faie des mathématiques... il y a forcment
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say ""
 say "$ordermagiedit1"
+}
+
+magie_tourdejafait () {
+var_magie="/dev/shm/mag-lequel.txt"
+		if test -e "$var1_magie"; then
+		sudo rm $var1_magie
+		fi
+	
+		if test -e "$var_magie"; then
+		sudo rm $var_magie
+		fi
+jv_warning "Tour déja fait aujourd'hui... ne peut-être refait ! désolé..."
+jv_pg_magiechiffre
 }
