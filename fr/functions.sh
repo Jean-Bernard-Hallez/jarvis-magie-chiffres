@@ -14,7 +14,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
- QuelTour="jv_pg_magiechiffre1" # pour faire du forcing #############################################################################
+# QuelTour="jv_pg_magiechiffre1" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 # echo "-$QuelTour-"
@@ -1415,7 +1415,7 @@ fi
 }
 
 fin-magie_estjuste() {
-ordermagiedit=("Alors est-ce que c'est juste ?" "Le résultat est bien bon ?" "ne me suis-je pas trompé?" "est-ce le bon résultat ?" "C'est bien la bonne réponse ?" "C'est bien le résultat qu'il devait y avoir ?")
+ordermagiedit=("Alors est-ce que c'est juste ?" "Le résultat est bien bon ?" "ne me suis-je pas trompé, c'est juste ?" "est-ce le bon résultat ?" "C'est bien la bonne réponse ?" "C'est bien le résultat qu'il devait y avoir ?")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say ""
 say "$ordermagiedit1"
