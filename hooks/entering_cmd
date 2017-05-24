@@ -1,7 +1,7 @@
 $verbose && jv_debug "DEBUG: entering_cmd hook"
+if test -e "$var1_magie"; then
 old_separator=$separator
 separator=""
-if test -e "$var1_magie"; then
 jv_info "Reprise tour de magie...";
 jv_handle_order "suite tour de magie."
 fi

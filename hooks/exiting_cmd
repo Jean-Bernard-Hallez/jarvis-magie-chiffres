@@ -1,3 +1,4 @@
 $verbose && jv_debug "DEBUG: exiting_cmd hook"
+if test -e "$var1_magie"; then
 separator=$old_separator
-
+fi

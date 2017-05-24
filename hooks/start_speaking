@@ -1,3 +1,2 @@
 $verbose && jv_debug "DEBUG: start_speaking hook"
-old_separator=$separator
-separator=""
+if test -e "$var1_magie"; then old_separator=$separator; separator=""; fi

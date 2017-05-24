@@ -1,2 +1,2 @@
 $verbose && jv_debug "DEBUG: stop_speaking hook"
-separator=$old_separator
+if [[ "$separator" == "" ]]; then separator=$old_separator; fi
