@@ -1,5 +1,6 @@
 $verbose && jv_debug "DEBUG: program_startup hook"
-
+var_magie="/dev/shm/mag-lequel.txt"
+if test -e "$var_magie"; then suite_tour_magie="1"; jv_info "Reprise tour de magie..."; fi
 
 
 

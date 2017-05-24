@@ -16,7 +16,7 @@ et les calculatrices si vous êtes pas matheux...
 Si vous avez de la chance et que vous être chez FREE... installer le plugin jarvis-FREE-sms... 
 http://domotiquefacile.fr/jarvis/plugins/sms-free-mobile
 
-vous en aurez besoin pour certains tours
+vous en aurez besoin pour certains tours.
 ## Languages
 
 * Français
@@ -50,6 +50,8 @@ jarvis: Est-ce que l'on recommence ?
 Vous: non
 jarvis: Ok, Au plaisir d'un autre tour de magie...
 
+Vous: fais un rezet des tours de magies.
+jarvis: Les tours de magie sont remis à zéro...
 ```
 
 ## Author

@@ -1,9 +1,21 @@
 jv_pg_magiechiffre() {
 magie_dire_1fois_repete
 var_magie="/dev/shm/mag-lequel.txt"
-
-if test -e "$var_magie"; then
+var1_magie="/dev/shm/mag-chiffre1.txt"
+if test -e "$var1_magie"; then
 QuelTour=`cat $var_magie`
+QuelTour_rep=`cat "$var1_magie"`
+if [[ "$suite_tour_magie" == "1" ]]; then
+suite_tour_magie=0
+QuelTour_rep=`echo "$QuelTour_rep" | sed -e "s/Q//g"`
+QuelTour_repp=$(( $QuelTour_rep - 1 ))
+	if [[ "$QuelTour_repp" =~ "-" ]]; then
+	QuelTour_repp="0"
+	fi
+
+echo "Q$QuelTour_repp" > $var1_magie
+fi
+
 $QuelTour
 else
 magie_tour_hasard
@@ -14,10 +26,10 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre3" # pour faire du forcing #############################################################################
+# QuelTour="jv_pg_magiechiffre0" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
-# echo "-$QuelTour-"
+jv_info "---$QuelTour---"
 $QuelTour
 }
 
@@ -35,13 +47,20 @@ if [[ "$var3_magie_date" == "$var3_magie_date_auj" ]]; then
 magie_tourdejafait
 return;
 fi
-
-say "Voici le tour ou je disparais à trois"
-say "1"
+say "Voici le tour ou je disparais à trois:"
+say "1" 
+amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 90% /dev/null 2>&1
 say "2"
+amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 80% /dev/null 2>&1
 say "3"
-say "je disparais..."
+amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 70% /dev/null 2>&1
+say "Je disparais..."
 magieGONG
+old_tempo=$tempo; tempo="0.8"
+amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 60% /dev/null 2>&1
+say "Relancez-moi..."
+tempo=$old_tempo
+amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 100% /dev/null 2>&1
 date +%d > $var3_magie
 return;
 }
@@ -80,10 +99,10 @@ fi
 if [[ "$var1valeur" == "Q1" ]]; then
 suiterep_magie="repete"
 if [[ "$aide_magie" == "aide" ]]; then
-say "additionner 90 à ce chiffre, par exemple si tu as pensée à 10 le résultat est 10 plus 90 est égale à 100 "
+say "Additionner 90 à ce chiffre, par exemple si tu as pensé à 10 le résultat est 10 plus 90 est égale à 100. "
 aide_magie=""
 else
-say "additionner 90 à ce chiffre "
+say "Additionner 90 à ce chiffre "
 fi
 magie_mot_ditok
 echo "Q2" > $var1_magie
@@ -92,9 +111,9 @@ fi
 
 if [[ "$var1valeur" == "Q2" ]]; then
 suiterep_magie="repete"
-say "rajoute le chiffre des centaines avec le nombre formé uniquement par le chiffre de dizaines et celui des unités."
+say "Rajoutes le chiffre des centaines avec le nombre formé uniquement par le chiffre des dizaines et celui des unités."
 	if [[ "$aide_magie" == "aide" ]]; then
-	say "par exemple si tu as trouvé 421 le résultat est 4  plus 21  c'est égale à 25"
+	say "par exemple si tu as trouvé 421 le résultat est 4  plus 21  c'est égale à 25."
 	aide_magie=""
 	fi
 magie_mot_ditok
@@ -115,10 +134,10 @@ max_chiffre_totalmagie="2"
 conv_chiffre_magie "$order"
 if [[ "$chiffre_totalmagie_bug" == "1" ]]; then return; fi
 
-say "je sais à présent à quel chiffre tu as pensé:"
+say "Je sais à présent à quel chiffre tu as pensé:"
 resultat_magie=$(( $resultat_magie + 9 ))
 magieGONG
-say "il s'agit du nombre: $resultat_magie"
+say "Il s'agit du nombre: $resultat_magie"
 
 fin-magie_estjuste
 return;
@@ -192,9 +211,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "maintenant sans rien me dire, tu vas écrire un nombre de quatre chiffre"
+say "maintenant sans rien me dire, tu vas écrire un nombre de quatre chiffres."
 	if [[ "$aide_magie" == "aide" ]]; then
-	say "par exemple 1 2 3 4"
+	say "par exemple 1 2 3 4."
 	aide_magie=""
 	fi
 
@@ -206,9 +225,9 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "additionne chacun des chiffres de ce nombre entres-eux"
+say "Additionnes chacun des chiffres de ce nombre entres-eux."
 	if [[ "$aide_magie" == "aide" ]]; then
-	say "par exemple si tu ton nombre est 1 2 3 4 tu fais 1 plus 2, plus 3, plus 4, c'est égale à 10"
+	say "par exemple si ton nombre est 1 2 3 4 tu fais 1 plus 2, plus 3, plus 4, c'est égale à 10."
 	aide_magie=""
 	fi
 
@@ -219,9 +238,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "soustrait ce chiffre que tu as trouvé au nombre du départ inscrit sur ton papier"
+say "Soustrais ce chiffre que tu as trouvé au nombre du départ inscrit sur ton papier."
 	if [[ "$aide_magie" == "aide" ]]; then
-	say "par exemple si tu as trouvé 1 2 3 4 moins 10 est égale à 1224"
+	say "par exemple si tu as trouvé 1 2 3 4 moins 10 est égale à 1224."
 	aide_magie=""
 	fi
 
@@ -232,7 +251,8 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
-say "dans l'ordre que tu veux donnes-moi simplement 3 des chiffres de ton résultat ?"
+say "Dans l'ordre que tu veux,"
+say "donnes-moi simplement 3 des chiffres de ton résultat ?"
 	if [[ "$aide_magie" == "aide" ]]; then
 	say "par exemple si tu as trouvé 1 2 3 4 tu peux me donner que 1 2 3, ou 2 3 4 ou, 1 2 4 exetera."
 	aide_magie=""
@@ -247,11 +267,12 @@ max_chiffre_totalmagie="3"
 conv_chiffre_magie "$order"
 
 if [[ "$chiffre_totalmagie_bug" == "1" ]]; then
-say "merci de me redonner dans l'ordre que tu veux 3 des chiffres de ton résultat..."
+say "Merci de me redonner dans l'ordre que tu veux,"
+say "3 des chiffres de ton résultat..."
 return;
 fi
 
-say "Tu m'as donné les chiffres$resultat_magie1_virgule"
+say "Tu m'as donné les chiffres$resultat_magie1_virgule."
 resultat_magie5=$(( 9 - $resultat_magie_addition ))
 resultat_magie="$resultat_magie5"
 if [[ "$resultat_magie5" =~ "-" ]]; then resultat_magie=$(( $resultat_magie5 + 9 )); fi
@@ -333,8 +354,8 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q0" ]]; then
-say "Voici le Tour à un coup d'œil de la journée"
-say "Je vais te demander de prendre un papier et un stylo"
+say "Voici le Tour à un coup d'œil de la journée !"
+say "Je vais te demander de prendre un papier et un stylo."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q1" > $var1_magie
@@ -342,9 +363,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "maintenant sans rien me dire, tu vas écrire un nombre de trois chiffre"
+say "Maintenant sans rien me dire, tu vas écrire un nombre de 3 chiffres."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple 123"
+say "par exemple 123."
 aide_magie=""
 fi
 magie_mot_ok
@@ -355,7 +376,8 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "ensuite formes un deuxième nombre en renversant l'ordre des chiffres, par exemple si tu avais 321 le second chiffre sera 123 ?"
+say "Ensuite, formes un deuxième nombre en renversant l'ordre des chiffres,"
+say "par exemple si tu avais 321 le second chiffre sera 123 ?"
 magie_mot_ok
 aide_magie=""
 suiterep_magie="repete"
@@ -364,10 +386,11 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "Soustraire le plus grand nombre au plus petit de ces chiffres, et entoure le"
+say "Soustraire le plus grand nombre au plus petit de ces chiffres,"
+say "et entoures le."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple si tu as 800 et 200 tu fais"
-say "800 moins 200 est égale à 600 "
+say "par exemple si tu as 800 et 200 tu fais:"
+say "800 moins 200 est égale à 600."
 aide_magie=""
 fi
 magie_mot_ok
@@ -377,9 +400,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
-say "Retournez encore une fois ce nouveau nombre que tu as trouvé, et entoure le aussi"
+say "Retournes encore une fois ce nouveau nombre que tu as trouvé, et entoures le aussi."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple si tu as 1 2 3 ca devient 3 2 1"
+say "par exemple si tu as 1 2 3 ca devient 3 2 1."
 aide_magie=""
 fi
 
@@ -390,7 +413,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q5" ]]; then
-say "Additionne les deux nombres entourés"
+say "Additionnes les deux nombres entourés."
 suiterep_magie=""
 echo "Q6" > $var1_magie
 return;
@@ -478,8 +501,8 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q0" ]]; then
-say "Voici le Tour à un coup d'œil de la journée"
-say "Je vais te demander de prendre un papier, un stylo et une calculatrice"
+say "Voici le Tour à un coup d'œil de la journée !"
+say "Je vais te demander de prendre un papier, un stylo et une calculatrice."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q1" > $var1_magie
@@ -487,7 +510,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "maintenant sans rien me dire, écrit un grand nombre quelconque avec plusieurs chiffres de ton choix."
+say "Maintenant sans rien me dire, écris un grand nombre quelconque avec plusieurs chiffres de ton choix."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 475968"
 aide_magie=""
@@ -501,7 +524,7 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "ensuite multiplie ce nombre par 9"
+say "Ensuite, multiplie ce nombre par le chifffre 9."
 magie_mot_ditok
 suiterep_magie="repete"
 echo "Q3" > $var1_magie
@@ -509,9 +532,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "retires 5 de ce nombre"
+say "Retires, 5 de ce nombre."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple si tu as 50 moins 5 c'est égale à 45 "
+say "par exemple si tu as 50 moins 5 c'est égale à 45."
 aide_magie=""
 fi
 magie_mot_ditok
@@ -521,9 +544,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
-say "additione chacun des chiffres de ce nombre entre eux"
+say "Additiones chacun des chiffres de ce nombre entre eux."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple si tu as 45 ça fait 4 plus 5 est égale à 9"
+say "par exemple si tu as 45 ça fait: 4 plus 5 est égale à 9."
 aide_magie=""
 fi
 suiterep_magie="repete"
@@ -533,12 +556,12 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q5" ]]; then
-say "Recommence jusqu'a ce que tu obtiennes qu'un seul chiffre"
+say "Recommence jusqu'à ce que tu obtiennes qu'un seul chiffre."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple si tu as 95 "
 say "ça fait 9 plus 5 est égale à 14"
 say "donc 14 c'est 1 plus 4 est égale à 5"
-say "il reste bien qu'un seul chiffre."
+say "Il reste bien qu'un seul chiffre."
 aide_magie=""
 fi
 suiterep_magie="repete"
@@ -548,9 +571,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q6" ]]; then
-say "Associer ce chiffre à la lettre correspondante dans l'alphabet et écrit le sans me le dire"
+say "Associer ce chiffre à la lettre correspondante dans l'alphabet et écrit le sans me le dire."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple si tu as le chiffre"
+say "par exemple si tu as le chiffre:"
 say "10,"
 say "la dixième lettre de l'alphabet est J"
 aide_magie=""
@@ -561,7 +584,7 @@ echo "Q7" > $var1_magie
 fi
 
 if [[ "$var1valeur" == "Q7" ]]; then
-say "Trouvez un pays d'Europe commençant par cette lettre, sans me le dire et ecrit le"
+say "Trouves un pays d'Europe commençant par cette lettre, sans me le dire et ecris le."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple si tu la lettre F, le pays peux être la France ou la Finlande exetera..."
 aide_magie=""
@@ -573,7 +596,7 @@ fi
 
 if [[ "$var1valeur" == "Q8" ]]; then
 say "Ok c'est à mon tour...  Sans que tu me dises quoi que ce soit, "
-say "je vais être capable de donner un fruit dont le nom commence par la dernière lettre du pays que tu as choisi..."
+say "Je vais être capable de donner un fruit dont le nom commence par la dernière lettre du pays que tu as choisi..."
 suiterep_magie="repete"
 magie_mot_ditok
 suiterep_magie=""
@@ -584,8 +607,8 @@ if [[ "$var1valeur" == "Q9" ]]; then
 magieGONG
 say "ça sent la verdure ?..."
 say "Je suis juteux ?..."
-say "de couleur vert à l'intérieur et un peu acide ?..."
-say "sa peau est marron ca y est ?! "
+say "De couleur vert à l'intérieur et un peu acide ?..."
+say "Sa peau est marron ca y est ?! "
 magieGONG
 say "C'est un kiwi ?!"
 sudo rm $var1_magie
@@ -634,7 +657,7 @@ fi
 
 if [[ "$var1valeur" == "Q0" ]]; then
 say "Voici le Tour de 7 fois !"
-say "Je vais te demander de prendre un papier, un stylo et une calculatrice"
+say "Je vais te demander de prendre un papier, un stylo et une calculatrice."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q1" > $var1_magie
@@ -642,7 +665,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "Choisi un seul chiffre que tu tapes sur ta calculatrice"
+say "Choisi un seul chiffre que tu tapes sur ta calculatrice."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple le 8..."
 aide_magie=""
@@ -656,11 +679,11 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "Multipliez-le plusieurs fois par des nombres pris au hasard de sorte qu'il y est 7 chiffres d'inscrit sur la calculatrice"
+say "Multipliez-le plusieurs fois par des nombres pris au hasard de sorte qu'il y est 7 chiffres d'inscrit sur la calculatrice."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 8 fois 12 fois 45 fois 351,"
 say "je me retrouve avec le nombre 1516320"
-say "soit, 7 chiffres au total"
+say "Soit, 7 chiffres au total."
 aide_magie=""
 fi
 
@@ -671,8 +694,8 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "inscris sur le papier ce nombre de 7 chiffres"
-say "et donnes moi au hasard 6 chiffres d'entres eux"
+say "Inscris sur le papier ce nombre de 7 chiffres."
+say "Et donnes moi au hasard 6 chiffres d'entres eux:"
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 1 2 3 4 5 6"
 aide_magie=""
@@ -695,7 +718,8 @@ suiterep_magie=""
 return;
 fi
 
-say "je pense savoir, je peux me tromper mais, tu m'as donné le$resultat_magie1_virgule..."
+say "Je pense avoir deviné, je peux me tromper mais,"
+say "tu ne m'as pas donné le$resultat_magie1_virgule..."
 
 verifnbrchif_magie=`echo "$resultat_magie_addition" | wc -c`
 if [[ "$verifnbrchif_magie" == "3" ]]; then
@@ -785,7 +809,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "Sans rien me dire, inscrivez votre mois de naissance"
+say "Sans rien me dire, inscrivez votre mois de naissance:"
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple si tu es né au mois de février tapes"
 say "2"
@@ -799,7 +823,7 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "Multipliez ce chiffre par 2"
+say "Multipliez ce chiffre par 2."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 2 fois 2"
 aide_magie=""
@@ -811,9 +835,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "Ajoutez 5"
+say "Ajoutez 5."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple 7 plus 7 est égale à 9"
+say "par exemple 7 plus 7 est égale à 9."
 aide_magie=""
 fi
 suiterep_magie="repete"
@@ -823,9 +847,9 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
-say "Multiplies le par 50"
+say "Multipliez le par 50."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple 2 fois 50 est égale à 100"
+say "par exemple 2 fois 50 est égale à 100."
 aide_magie=""
 fi
 suiterep_magie="repete"
@@ -842,7 +866,7 @@ ajouter_magie_date=$((`date +%Y` - 2003 + 1753 + $chiffre_magie_random))
 max_chiffre_totalmagie=4
 conv_chiffre_magie "$ajouter_magie_date"
 # $resultat_magie --> Résulat
-say "Ajoutez $ajouter_magie_date soit$resultat_magie1_virgule"
+say "Ajoutez $ajouter_magie_date soit$resultat_magie1_virgule."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q6" > $var1_magie
@@ -850,10 +874,10 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q6" ]]; then
-say "soustraire votre année de naissance: par exemple 1971, "
+say "Soustraire votre année de naissance: par exemple 1971, "
 say "et donnez-moi le résultat que vous avez trouvé."
 if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple 2 3 6 1 si il y a quatre chiffre "
+say "par exemple 2 3 6 1 si il y a quatre chiffre."
 suiterep_magie=""
 return;
 fi
@@ -871,7 +895,7 @@ conv_chiffre_magie "$order"
 	jv_pg_magiechiffre6
 	return;
 	fi
-say "si j'ai bien compris tu m'as dit:  $order soit$resultat_magie1_virgule"
+say "Si j'ai bien compris tu m'as dit:  $resultat_magie soit$resultat_magie1_virgule"
 say "est ce bien cela, oui ou non ?"
 suiterep_magie=""
 echo "Q8" > $var1_magie
@@ -885,13 +909,13 @@ echo "Q6" > $var1_magie
 jv_pg_magiechiffre6
 return;
 fi
-	if [[ "$order" =~ "non" ]]; then
+	if [[ "$order" =~ "oui" ]]; then
+	echo "Q9" > $var1_magie
+	else
 	order="repète"
 	echo "Q6" > $var1_magie
 	jv_pg_magiechiffre6
 	return;
-	else
-	echo "Q9" > $var1_magie
 	fi
 
 
@@ -958,7 +982,7 @@ local moisentier="Décembre"
 fi
 							     
 magieGONG
-say "Vous avez exactement $resultat_magie2 ans et jous êtes du mois de $moisentier"
+say "Vous avez exactement $resultat_magie2 ans et jous êtes du mois de $moisentier."
 fin-magie_estjuste
 return;
 fi
@@ -1032,7 +1056,8 @@ fi
 
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "Sans rien me dire, prends ton âge et multiplie le par 10, écris le sur le papier et entoure le"
+say "Sans rien me dire, prends ton âge et multipliez le par 10,"
+say "écris le sur le papier et entoure le."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q2" > $var1_magie
@@ -1040,7 +1065,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "Pense un simple chiffre et écrit le sur le papier"
+say "Penses à un simple chiffre de 1 à 9 et écris le sur le papier."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q3" > $var1_magie
@@ -1048,7 +1073,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "multiplie-le par 9 et entoure le résultat"
+say "Multipliez-le par 9 et entoures le résultat."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q4" > $var1_magie
@@ -1056,7 +1081,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
-say "soustrait maintenant les deux nombres que tu as entouré"
+say "Soustraire maintenant les deux nombres que tu as entouré."
 suiterep_magie=""
 magie_mot_ditok
 echo "Q5" > $var1_magie
@@ -1140,7 +1165,7 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q0" ]]; then
-say "Voici le Tour ou je dois Devinez un très grand nombre !"
+say "Voici le Tour ou je dois deviner un très grand nombre !"
 min=19999
 max=29999
 chiffre_magie_random=$[($RANDOM % ($[$max - $min] + 1)) + $min]
@@ -1169,7 +1194,7 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "ok je le fais partir..."
+say "Ok je le fais partir..."
 jv_handle_order "MESSEXTERNE ; $NOM_MAGIE_POURSMS ; je vous avez bien dit que je suis fort: $chiffre_magie_random"
 say "$NOM_MAGIE_POURSMS l'as tu bien reçu ?..."
 echo "Q2" > $var1_magie
@@ -1187,7 +1212,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
-say "inscris sur ce papier ce nombre: "
+say "Inscris sur ce papier ce nombre: "
 say "$resultat_magie soit$resultat_magie1_virgule"
 suiterep_magie="repete"
 magie_mot_ditok
@@ -1198,7 +1223,7 @@ fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
 say "Maintenant sous ce nombre,"
-say "inscris un nombre de 4 chiffres quelconque"
+say "Inscris un nombre de 4 chiffres quelconque,"
 say "en alignant les unitées avec les unitées, les dizaines avec les dizaines exetera..."
 say "et dictes-moi ton nombre:"
 if [[ "$aide_magie" == "aide" ]]; then
@@ -1231,7 +1256,7 @@ fi
 fi
 
 if [[ "$var1valeur" == "Q6" ]]; then
-say "Dessous ce nombre que tu as mis"
+say "Dessous ce nombre que tu as mis:"
 max_chiffre_totalmagie=4
 resultat_magie6=$(( 9999 - $resultat_magie5 ))
 conv_chiffre_magie "$resultat_magie6"
@@ -1245,7 +1270,7 @@ fi
 
 if [[ "$var1valeur" == "Q7" ]]; then
 say "A ton tour..."
-say "inscris encore un nombre à 4 chiffres et dictes moi le à nouveau"
+say "Inscris encore un nombre à 4 chiffres et dictes moi le à nouveau:"
 if [[ "$aide_magie" == "aide" ]]; then
 say "Par exemple 1 2 3 4"
 fi
@@ -1287,8 +1312,8 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q10" ]]; then
-say "Maintenant tire un trait sous ces nombres."
-say "Puis fais l'addition sans rien me dire"
+say "Maintenant tires un trait sous ces nombres."
+say "Puis fais l'addition sans rien me dire."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q11" > $var1_magie
@@ -1297,7 +1322,7 @@ fi
 
 if [[ "$var1valeur" == "Q11" ]]; then
 say "Il me faut me concentrer..."
-say "car il me faut trouver le résultat final...un coup de baguette magique !?"
+say "Car il me faut trouver le résultat final... Un coup de baguette magique !?"
 magieGONG
 if [ -z "$resultat_magie8" ] || [ -z "$resultat_magie7" ] ||  [ -z "$resultat_magie6" ] ||  [ -z "$resultat_magie5" ] || [ -z "$resultat_magie3" ]; then
 echo "FIN" > $var1_magie
@@ -1443,14 +1468,14 @@ if test -n "$max_chiffre_totalmagie"; then
 		chiffre_sinplur="chiffres"
 		fi
 
-	say "il manque $manquant_chiffre_totalmagie $chiffre_sinplur, j'ai compris que le$resultat_magie1_virgule, redictez-moi tout"
+	say "Il manque $manquant_chiffre_totalmagie $chiffre_sinplur, j'ai compris que le$resultat_magie1_virgule, redictez-moi tout:"
 	chiffre_totalmagie_bug="1"
 	return;
 	fi
 
 	if [[ "$verifnbrchif_magie" -gt "$max_chiffre_totalmagie" ]]; then 
 	say "$verifnbrchif_magie chiffres ! il y en a trop !! "
-	say "redictes moi les car j'ai entendu$resultat_magie1_virgule ";
+	say "Redictes moi les car j'ai entendu$resultat_magie1_virgule ";
 	chiffre_totalmagie_bug="1"
 	return;
 	fi
@@ -1574,7 +1599,7 @@ fi
 }
 
 magie_mot_ditok () {
-ordermagiedit=("j'attends le mot: Ok !" "c'est OK ?" "est ce ok ?" "Ok pour toi ?" "tu es ok ?" "prononce ok pour continuer !" "ok ?" "réponds moi par ok ?")
+ordermagiedit=("J'attends le mot: Ok !" "C'est OK ?" "Est ce ok ?" "Ok pour toi ?" "Tu es ok ?" "Prononces ok pour continuer ?" "ok ?" "Réponds moi par ok ?" "Dis-moi quand tu es ok ? " "Ok ?")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say "$ordermagiedit1"
 }
@@ -1588,13 +1613,37 @@ echo $(( `date +%d` - 1))  > $var_magie_repetunjour
 fi
 
 if [[ "$aijedis_magie_repetunjour" != `date +%d` ]]; then
-say "A tout moment vous pouvez prononcer deux mots magique"
-say "répète !"
-say "si vous avez mal saisie ce que je vous demande..."
+old_tempo=$tempo; tempo="1.6"
+say "Avant de commencer, vous devez être dans un endroit calme afin que je puisse vous comprendre,"
+say "A tout moment vous pouvez prononcer deux mots magique:"
+say "Répète !"
+say "Si vous avez mal saisie ce que je vous demande..."
 say "et le second:"
-say "on arrête !"
-say "pour stopper les tours de magie"
+say "On arrête !"
+say "Pour stopper les tours de magie."
+tempo=$old_tempo
 date +%d > $var_magie_repetunjour
+fi
+}
+
+magiedire_choix() {
+var_magie_repetfinmagie="/dev/shm/repetok.txt"
+aijedis_magie_repetfinmagie=`cat $var_magie_repetfinmagie`
+if [ ! -e "$var_magie_repetfinmagie" ]; then
+echo $(( `date +%d` - 1))  > $var_magie_repetfinmagie
+fi
+
+if [[ "$aijedis_magie_repetfinmagie" != `date +%d` ]]; then
+old_tempo=$tempo; tempo="1.6"
+say "Pour recommencer ce tour dites ?"
+say "Recommencer"
+say "Pour changer de tour dites ?"
+say "Changer"
+say "Dites Arrêter pour quitter ce plugin."
+tempo=$old_tempo
+date +%d > $var_magie_repetfinmagie
+else
+say "On recommence, on change, on arrête ?"
 fi
 }
 
@@ -1651,15 +1700,21 @@ say "$ordermagiedit1"
 }
 
 gonouveautour_magie () {
-ordermagiedit=("C'est partie pour un nouveau tour ? !..." "La magie suiviant que je te propose:" "ok, Nouveau tour de magie... ? !" "d'accord on fait un autre tour de magie ? !..." "Je recherche un nouveau tour ? ! ..." "ok, j'en ai trouvé un autre... ? !")
+ordermagiedit=("C'est partie pour un nouveau tour ? !..." "La magie suiviant que je te propose:" "Ok, nouveau tour de magie... ? !" "D'accord on fait un autre tour de magie ? !..." "Je recherche un nouveau tour ? ! ..." "Ok, j'en ai trouvé un autre... ? !")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say "$ordermagiedit1"
 }
 
-magiedire_choix() {
-say "Pour recommencer ce tour dites ?"
-say "recommencer"
-say "Pour changer de tour dites ?"
-say "changer"
-say "dites Arrêter pour quitter ce plugin"
+
+
+jv_pg_reset_magiechiffre () {
+jv_pg_magiechiffre_fin
+var_magie_repetunjour="/dev/shm/repetok.txt"
+if test -e "$var_magie_repetunjour"; then
+sudo rm $var_magie_repetunjour
+fi
+var3_magie="/dev/shm/tour1fois*.txt"
+sudo rm $var3_magie > /dev/null 2>&1
+say "Les tours de magie sont remis à zéro..."
+
 }
