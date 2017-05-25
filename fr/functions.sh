@@ -26,7 +26,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre0" # pour faire du forcing #############################################################################
+QuelTour="jv_pg_magiechiffre5" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 jv_info "---$QuelTour---"
@@ -58,7 +58,7 @@ say "Je disparais..."
 magieGONG
 old_tempo=$tempo; tempo="0.8"
 amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 60% /dev/null 2>&1
-say "Relancez-moi..."
+say "Je suis très loin Relancez-moi..."
 tempo=$old_tempo
 amixer -c $ALSAMIXERCARTEVOLUME -M set $ALSAMIXERNOMVOLUME 100% /dev/null 2>&1
 date +%d > $var3_magie
@@ -363,7 +363,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "Maintenant sans rien me dire, tu vas écrire un nombre de 3 chiffres."
+say "Maintenant sans rien me dire, tu vas écrire un nombre de 3 chiffres différents."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 123."
 aide_magie=""
@@ -387,7 +387,9 @@ fi
 
 if [[ "$var1valeur" == "Q3" ]]; then
 say "Soustraire le plus grand nombre au plus petit de ces chiffres,"
-say "et entoures le."
+say "et surtout entoures le."
+say "On est bien d'accord... entoures le."
+
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple si tu as 800 et 200 tu fais:"
 say "800 moins 200 est égale à 600."
@@ -696,10 +698,10 @@ fi
 if [[ "$var1valeur" == "Q3" ]]; then
 say "Inscris sur le papier ce nombre de 7 chiffres."
 say "Et donnes moi au hasard 6 chiffres d'entres eux:"
-if [[ "$aide_magie" == "aide" ]]; then
-say "par exemple 1 2 3 4 5 6"
-aide_magie=""
-fi
+	if [[ "$aide_magie" == "aide" ]]; then
+	say "par exemple 1 2 3 4 5 6"
+	aide_magie=""
+	fi
 say "Je vais être capable de retrouver celui qui manque..."
 suiterep_magie=""
 echo "Q4" > $var1_magie
@@ -713,31 +715,42 @@ conv_chiffre_magie "$order"
 # resultat_magie --> résultat
 
 if [[ "$chiffre_totalmagie_bug" == "1" ]]; then
-say "essayes par groupe e 2 chiffres"
+say "essayes peut-être par groupe de 2 chiffres"
 suiterep_magie=""
 return;
 fi
 
-say "Je pense avoir deviné, je peux me tromper mais,"
-say "tu ne m'as pas donné le$resultat_magie1_virgule..."
-
-verifnbrchif_magie=`echo "$resultat_magie_addition" | wc -c`
-if [[ "$verifnbrchif_magie" == "3" ]]; then
-resultat_magie7a=`echo $resultat_magie_addition | cut -c1`
-resultat_magie7b=`echo $resultat_magie_addition | cut -c2`
-resultat_magie7=$(( $resultat_magie7a + $resultat_magie7b ))
-else
-resultat_magie7="$resultat_magie_addition"
+say "tu m'as donné le chiffre $resultat_magie soit le$resultat_magie1_virgule..."
+say "Est-ce bien cela oui ou non ?"
+suiterep_magie=""
+echo "Q5" > $var1_magie
+return;
 fi
 
-resultat_magie8=$(( 9 - $resultat_magie7 ))
-resultat_magie="$resultat_magie8"
-if [[ "$resultat_magie8" =~ "-" ]]; then resultat_magie=$(( $resultat_magie8 + 9 )); fi
-							     
-magieGONG
-say "le chiffre manquant est le: $resultat_magie"
-fin-magie_estjuste
-return;
+if [[ "$var1valeur" == "Q5" ]]; then
+	if [[ "$order" =~ "oui" ]]; then
+	verifnbrchif_magie=`echo "$resultat_magie_addition" | wc -c`
+		if [[ "$verifnbrchif_magie" == "3" ]]; then
+		resultat_magie7a=`echo $resultat_magie_addition | cut -c1`
+		resultat_magie7b=`echo $resultat_magie_addition | cut -c2`
+		resultat_magie7=$(( $resultat_magie7a + $resultat_magie7b ))
+		else
+		resultat_magie7="$resultat_magie_addition"
+		fi
+
+	resultat_magie8=$(( 9 - $resultat_magie7 ))
+	resultat_magie="$resultat_magie8"
+	if [[ "$resultat_magie8" =~ "-" ]]; then resultat_magie=$(( $resultat_magie8 + 9 )); fi
+
+	say "Je pense avoir deviné, je peux me tromper mais:"
+	magieGONG
+	say "le chiffre manquant est le: $resultat_magie"
+	fin-magie_estjuste
+	return;
+	else
+	echo "Q3" > $var1_magie
+	return;
+	fi
 fi
 
 if [[ "$var1valeur" == "RESULTAT" ]]; then
@@ -1667,7 +1680,7 @@ echo "RESULTAT" > $var1_magie
 }
 
 magie_mot_fin_ok() {
-ordermagiedit=("Je le savais, je suis la plus forte !" "C'est magique n'est pas !" "Alors qui est la plus forte ? " "Magique n'est ce pas !" "C'est impressionant je sais bien merci..." "Il n'y a pas plus magique que moi lol ! " "Je suis fier de mes capacités !" "Moi même je me surprends" "je sais, je suis très forte !")
+ordermagiedit=("Je le savais, je suis la plus forte !" "C'est magique n'est ce pas !" "Alors qui est la plus forte ? " "Magique n'est ce pas  ? !" "C'est impressionant je sais bien merci ? !..." "Il n'y a pas plus magique que moi lol ? ! " "Je suis fière de mes capacités ? !" "Moi même je me surprends ? !" "Je sais, je suis très forte ? !")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say ""
 say "$ordermagiedit1"
