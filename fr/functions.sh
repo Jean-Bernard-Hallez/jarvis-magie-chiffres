@@ -1,4 +1,5 @@
 jv_pg_magiechiffre() {
+# Ok
 magie_dire_1fois_repete
 var_magie="/dev/shm/mag-lequel.txt"
 var1_magie="/dev/shm/mag-chiffre1.txt"
@@ -15,25 +16,7 @@ QuelTour_repp=$(( $QuelTour_rep - 1 ))
 
 echo "Q$QuelTour_repp" > $var1_magie
 fi
-	if [[ "$order" =~ "commen" ]]; then 
-	genialrecommenc_magie
-	echo "Q0" > $var1_magie
-	FINMAGIECHIFFRE=""
-	chiffre_totalmagie_bug="0"
-	QuelTour=`cat "$var_magie"`
-	$QuelTour
-	return;
-	fi	
-
-	if [[ "$order" =~ "chang" ]]; then 
-	echo "Q0" > $var1_magie
-	gonouveautour_magie
-	FINMAGIECHIFFRE=""
-	chiffre_totalmagie_bug="0"
-	jv_pg_magiechiffre_fin
-	jv_pg_magiechiffre
-	return;
-	fi	
+	
 
 $QuelTour
 else
@@ -45,7 +28,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-# QuelTour="jv_pg_magiechiffre5" # pour faire du forcing #############################################################################
+# QuelTour="jv_pg_magiechiffre8" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 jv_info "---$QuelTour---"
@@ -294,11 +277,13 @@ fi
 say "Tu m'as donné les chiffres$resultat_magie1_virgule."
 resultat_magie5=$(( 9 - $resultat_magie_addition ))
 resultat_magie="$resultat_magie5"
-if [[ "$resultat_magie5" =~ "-" ]]; then resultat_magie=$(( $resultat_magie5 + 9 )); fi
+if [[ "$resultat_magie5" =~ "-" ]]; then 
+resultat_magie=$(( $resultat_magie5 + 9 )); 
+fi
 							     
 say "et le chiffre manquant est le:"
 magieGONG
-say "C'est le $resultat_magie5 !"
+say "C'est le $resultat_magie !"
 fin-magie_estjuste
 return;
 fi
@@ -632,9 +617,12 @@ say "De couleur vert à l'intérieur et un peu acide ?..."
 say "Sa peau est marron ca y est ?! "
 magieGONG
 say "C'est un kiwi ?!"
-sudo rm $var1_magie
 date +%d > $var4_magie
 fin-magie_estjuste
+# gonouveautour_magie
+FINMAGIECHIFFRE=""
+echo "RESULTAT" > $var1_magie
+chiffre_totalmagie_bug="0"
 return;
 fi
 
@@ -644,13 +632,25 @@ if [[ "$var1valeur" == "RESULTAT" ]]; then
 	else
 	magie_mot_fin_rate
 	fi
-
-say "Est-ce que l'on recommence ?"
+magiedire_choix
 suiterep_magie=""
 echo "FIN" > $var1_magie
-return;
 fi
+
+if [[ "$var1valeur" == "FIN" ]]; then
+	echo "Q0" > $var1_magie
+	gonouveautour_magie
+	FINMAGIECHIFFRE=""
+	chiffre_totalmagie_bug="0"
+	jv_pg_magiechiffre_fin
+	jv_pg_magiechiffre
+	return;
+fi
+
+
 }
+
+	
 
 
 ######################################################
@@ -1015,7 +1015,7 @@ local moisentier="Décembre"
 fi
 							     
 magieGONG
-say "Vous avez exactement $resultat_magie2 ans et jous êtes du mois de $moisentier."
+say "Vous avez exactement $resultat_magie2 ans et vous êtes du mois de $moisentier."
 fin-magie_estjuste
 return;
 fi
@@ -1098,7 +1098,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "Penses à un simple chiffre de 1 à 9 et écris le sur le papier."
+say "à coté du chiffre entouré, écris un simple chiffre de 1 à 9."
 suiterep_magie="repete"
 magie_mot_ditok
 echo "Q3" > $var1_magie
@@ -1115,28 +1115,42 @@ fi
 
 if [[ "$var1valeur" == "Q4" ]]; then
 say "Soustraire maintenant les deux nombres que tu as entouré."
+say "Et donnes moi le résultat."
 suiterep_magie=""
-magie_mot_ditok
 echo "Q5" > $var1_magie
 return;
 fi
-
 
 if [[ "$var1valeur" == "Q5" ]]; then
 max_chiffre_totalmagie=3
 conv_chiffre_magie "$order"
 # $resultat_magie --> Résulat
 
-resultat_magie1=`echo $resultat_magie | cut -c1-2`
-resultat_magie2=`echo $resultat_magie | cut -c3`
-resultat_magie3=$(( $resultat_magie1 + resultat_magie2 ))
-				     
-magieGONG
+say "tu m'as donné le chiffre $resultat_magie soit le$resultat_magie1_virgule..."
+say "Est-ce bien cela oui ou non ?"
+suiterep_magie=""
+echo "Q6" > $var1_magie
 
-say "Vous avez $resultat_magie3 ans..."
+fi
 
-fin-magie_estjuste
+if [[ "$var1valeur" == "Q6" ]]; then
+	if [[ "$order" =~ "oui" ]] || [[ "$order" =~ "ok" ]]; then
+	resultat_magie1=`echo $resultat_magie | cut -c1-2`
+	resultat_magie2=`echo $resultat_magie | cut -c3`
+	resultat_magie3=$(( $resultat_magie1 + resultat_magie2 ))
+	
+	magieGONG
+	
+	say "Vous avez $resultat_magie3 ans..."
+	
+	fin-magie_estjuste
+	echo "RESULTAT" > $var1_magie
+	return;
+	else
+	echo "Q4" > $var1_magie
+	fi
 return;
+
 fi
 
 if [[ "$var1valeur" == "RESULTAT" ]]; then
@@ -1457,7 +1471,7 @@ fi
 
 
 conv_chiffre_magie () {
-resultat_magie=`echo "$1" | sed -e "s/un/1/g" | sed -e "s/deux/2/g" | sed -e "s/de/2/g" | sed -e "s/trois/3/g" | sed -e "s/quatre/4/g" | sed -e "s/cinq/5/g" | sed -e "s/six/6/g" | sed -e "s/sept/7/g" | sed -e "s/huit/huit/g" | sed -e "s/neuf/9/g" | sed -e "s/zéro/0/g" | sed -e "s/ //g" | sed -e 's/[^0-9]//g'`
+resultat_magie=`echo "$1" | sed -e "s/un/1/g" | sed -e "s/deux/2/g" | sed -e "s/de/2/g" | sed -e "s/trois/3/g" | sed -e "s/quatre/4/g" | sed -e "s/cinq/5/g" | sed -e "s/six/6/g" | sed -e "s/sept/7/g" | sed -e "s/huit/8/g" | sed -e "s/neuf/9/g" | sed -e "s/zéro/0/g" | sed -e "s/ //g" | sed -e 's/[^0-9]//g'`
 order_magie_numerique=`echo "$resultat_magie" | sed -e 's/[^0-9]//g'`
 verifnbrchif_magie=$((`echo "$resultat_magie" | wc -c` - 1 ))
 verifnbrchif_boucle="1"
@@ -1631,7 +1645,7 @@ fi
 }
 
 magie_mot_ditok () {
-ordermagiedit=("J'attends le mot: Ok !" "C'est OK ?" "Est ce ok ?" "Ok pour toi ?" "Tu es ok ?" "Prononces ok pour continuer ?" "ok ?" "Réponds moi par ok ?" "Dis-moi quand tu es ok ? " "Ok ?")
+ordermagiedit=("J'attends le mot: Ok !" "C'est OK ?" "Est ce ok ?" "Ok pour toi ?" "Tu es ok ?" "Prononces ok pour continuer ?" "ok ?" "Réponds moi par ok ?" "Dis-moi quand tu es ok ? " "Ok ?" "Toujours Ok ? ")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say "$ordermagiedit1"
 }
@@ -1706,7 +1720,7 @@ say "$ordermagiedit1"
 }
 
 magie_mot_fin_rate() {
-ordermagiedit=("Alors on ne sait plus faie des mathématiques... il y a forcment une ereur de ta part..." "je ne me trompe jamais... toi oui recommence !" "il ne peut pas y avoir d'erreur... tu t'es trompé quelque part..." "impossible, tu t'es trompé dans tes calculs..." "Recommence tu as fait un erreur de mathématique" "Il te faut reprendre les calculs, il y a une erreur, recommence...")
+ordermagiedit=("Alors on ne sait plus faie des mathématiques... il y a forcement une ereur de ta part..." "je ne me trompe jamais... toi oui recommence !" "il ne peut pas y avoir d'erreur... tu t'es trompé quelque part..." "impossible, tu t'es trompé dans tes calculs..." "Recommence tu as fait un erreur de mathématique" "Il te faut reprendre les calculs, il y a une erreur, recommence...")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say ""
 say "$ordermagiedit1"
