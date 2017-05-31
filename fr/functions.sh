@@ -15,6 +15,25 @@ QuelTour_repp=$(( $QuelTour_rep - 1 ))
 
 echo "Q$QuelTour_repp" > $var1_magie
 fi
+	if [[ "$order" =~ "commen" ]]; then 
+	genialrecommenc_magie
+	echo "Q0" > $var1_magie
+	FINMAGIECHIFFRE=""
+	chiffre_totalmagie_bug="0"
+	QuelTour=`cat "$var_magie"`
+	$QuelTour
+	return;
+	fi	
+
+	if [[ "$order" =~ "chang" ]]; then 
+	echo "Q0" > $var1_magie
+	gonouveautour_magie
+	FINMAGIECHIFFRE=""
+	chiffre_totalmagie_bug="0"
+	jv_pg_magiechiffre_fin
+	jv_pg_magiechiffre
+	return;
+	fi	
 
 $QuelTour
 else
@@ -26,7 +45,7 @@ magie_tour_hasard () {
 magienumero=("jv_pg_magiechiffre0" "jv_pg_magiechiffre1" "jv_pg_magiechiffre2" "jv_pg_magiechiffre3" "jv_pg_magiechiffre4" "jv_pg_magiechiffre5" "jv_pg_magiechiffre6" "jv_pg_magiechiffre7" "jv_pg_magiechiffre8")
 QuelTour="${magienumero[$RANDOM % ${#magienumero[@]} ]}"
 ######################################################################################################################################
-QuelTour="jv_pg_magiechiffre5" # pour faire du forcing #############################################################################
+# QuelTour="jv_pg_magiechiffre5" # pour faire du forcing #############################################################################
 ######################################################################################################################################
 echo "$QuelTour" > $var_magie
 jv_info "---$QuelTour---"
@@ -667,7 +686,7 @@ return;
 fi
 
 if [[ "$var1valeur" == "Q1" ]]; then
-say "Choisi un seul chiffre que tu tapes sur ta calculatrice."
+say "Choisi un seul chiffre que tu multiplies par un nombre de deux à quatre chiffres maximum pris au hasard"
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple le 8..."
 aide_magie=""
@@ -681,7 +700,8 @@ fi
 
 
 if [[ "$var1valeur" == "Q2" ]]; then
-say "Multipliez-le plusieurs fois par des nombres pris au hasard de sorte qu'il y est 7 chiffres d'inscrit sur la calculatrice."
+say "Continuez à multiplier le résultat plusieurs fois de la même manière"
+say "arrêtez-vous lorsque vous arrivez à 7 chiffres inscrits dans la calculatrice."
 if [[ "$aide_magie" == "aide" ]]; then
 say "par exemple 8 fois 12 fois 45 fois 351,"
 say "je me retrouve avec le nombre 1516320"
@@ -1555,7 +1575,6 @@ mauvrep_magie=""
 memoordermagie=""
 order=""
 suiterep_magie=""
-
 fi
 }
 
@@ -1713,7 +1732,7 @@ say "$ordermagiedit1"
 }
 
 gonouveautour_magie () {
-ordermagiedit=("C'est partie pour un nouveau tour ? !..." "La magie suiviant que je te propose:" "Ok, nouveau tour de magie... ? !" "D'accord on fait un autre tour de magie ? !..." "Je recherche un nouveau tour ? ! ..." "Ok, j'en ai trouvé un autre... ? !")
+ordermagiedit=("C'est partie pour un nouveau tour ? !..." "La magie suivante que je te propose:" "Ok, nouveau tour de magie... ? !" "D'accord on fait un autre tour de magie ? !..." "Je recherche un nouveau tour ? ! ..." "Ok, j'en ai trouvé un autre... ? !")
 ordermagiedit1="${ordermagiedit[$RANDOM % ${#ordermagiedit[@]} ]}"
 say "$ordermagiedit1"
 }
